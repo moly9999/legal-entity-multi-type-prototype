@@ -4,7 +4,7 @@
 
 ## 在线预览
 
-打开仓库 GitHub Pages 后访问首页即可预览原型（见仓库 About / Settings → Pages）。
+https://moly9999.github.io/legal-entity-multi-type-prototype/
 
 ## 仓库内容
 
