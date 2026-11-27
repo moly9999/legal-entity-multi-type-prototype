@@ -1,0 +1,477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>学而思房租核算系统 - 法律主体多类型维护原型</title>
+<style type="text/css">
+/* ===== 现网 main.css 关键样式（资源指向代码目录切图） ===== */
+body,form,p,ol,ul,li,h1,h2,h3,h4{margin:0;padding:0;font-family:"\5FAE\8F6F\96C5\9ED1", "Verdana", "Arial";font-size:12px; line-height:22px;}
+ul,li{list-style:none;}
+img,fieldset{border:0;}
+body,html{background-color:#0A5C8E; height:100%;}
+a{color:#000;text-decoration:none;}
+a:hover{color:#025D91;text-decoration:underline;}
+Select{font-size:12px;}
+.inputText{font-size:12px; width:96px; border:1px solid #CDCDCD; background:#FFF; height:18px; line-height:18px;}
+.inputBtn{ background:url(assets/btnbg.gif) no-repeat; width:65px; height:25px; color:#FFF; font-size:12px; font-weight:bold; border:0; cursor:pointer;}
+.inputBtn4{ background:url(assets/btnbg4.gif) no-repeat; width:90px; height:25px; color:#FFF; font-size:12px; font-weight:bold; border:0; cursor:pointer;}
+.bold{ font-weight:bold;}
+.red{ color:#F00}
+.bgblue{ background:#F2FBFF}
+.magn4{margin:4px auto;}
+.margintop20{ margin-top:20px;}
+
+.top{ height:60px; background:url(assets/top_bg.gif) repeat-x; width:100%;}
+.top_bar{height:23px; line-height:23px;background:url(assets/top_bar.gif) repeat-x;width:100%;}
+.fz,.zx,.fz:hover,.zx:hover{font-size:12px;line-height:25px;float:left;height:23px;width:85px;padding-left:45px;color:#fff; background:#0A5C8E;}
+.fzMainMenu,.zxMainMenu{background:#1E7AB8; font-weight:bold;}
+
+.left_td{width:184px;background-color:#E6F4FD;border-left:5px solid #0A5C8E; border-right:1px solid #0A5C8E; border-bottom:5px solid #0A5C8E;border-top:5px solid #0A5C8E;}
+.left_bar{width:184px; height:23px; line-height:23px; color:#FFFFFF; font-weight:bold; text-align:center;background:url(assets/left_bar.jpg) no-repeat;background-size:100%;}
+.left_tree{ padding:5px;}
+.treetitle{ background:url(assets/folder.gif) no-repeat left; padding-left:20px; line-height:28px;}
+.treepage{ padding-left:16px;}
+.treepage li{ background:url(assets/page.gif) no-repeat 4px; padding-left:21px;}
+.treepage .active{ background:#90d5fa url(assets/page.gif) no-repeat 4px;}
+
+.right_td{background-color:#fff;border-left:1px solid #0A5C8E; border-right:5px solid #0A5C8E; border-bottom:5px solid #0A5C8E;border-top:5px solid #0A5C8E;}
+.position{ height:28px; line-height:28px;background:url(assets/position_bg.jpg) repeat-x; padding-left:10px;}
+.position img{ margin:6px 5px 0 0; display:block; float:left}
+.right_main{ padding:2px;}
+.searchcase{width:100%; border:1px solid #CCE9F7; background:#F4FCFF; padding-top:10px; padding-bottom:10px; margin-bottom:8px;}
+.listcase{width:100%; margin-bottom:8px;}
+.tableClass{border-collapse:collapse; border:#B5D6E6 solid 1px;}
+.tableClass th{background:url(assets/listTitlebg.gif) repeat-x; height:26px; text-align:center; font-weight:normal; background-color:#CDE9FC; border:#B5D6E6 solid 1px;}
+.tableClass td{ border:#B5D6E6 solid 1px; text-align:center; padding:4px 2px;}
+.tableClass a{color:#F60; text-decoration:underline;}
+.tableClass a:hover{color:#F60; text-decoration:none;}
+.pageTurn{margin-bottom:10px;margin-top:10px; text-align:right;}
+.pageTurn a{text-decoration:underline; color:#0678A8;}
+.pageTurn a:hover{text-decoration:none; color:#0678A8;}
+
+.openK{background:#F7FCFF; padding-bottom:26px;}
+.openK_title{ background:url(assets/opentitle.gif) repeat-x; height:28px; font-size:14px; font-weight:bold; text-align:left; text-indent:10px; line-height:28px;}
+.openK_title span{float:right; margin-right:10px;}
+.openK_title span img{ margin-top:5px; cursor:pointer;}
+
+/* 原型遮罩弹层（模拟 thickbox） */
+.mask{display:none; position:fixed; left:0; top:0; right:0; bottom:0; background:rgba(0,0,0,.45); z-index:1000;}
+.mask.show{display:block;}
+.tb-win{position:fixed; left:50%; top:40px; transform:translateX(-50%); z-index:1001; display:none; border:1px solid #7AA8C3; box-shadow:0 2px 12px rgba(0,0,0,.25);}
+.tb-win.show{display:block;}
+.tb-edit{width:560px;}
+.tb-import{width:620px;}
+.chk-grid{width:100%;}
+.chk-grid td{text-align:left; padding:2px 4px; white-space:nowrap;}
+.tag-multi{color:#025D91;}
+.hint-line{color:#C43C00; padding:6px 10px; background:#FFF8EB; border-bottom:1px solid #F0D9A8; text-align:left;}
+.file-row{padding:8px 0;}
+.result-box{border:1px solid #B5D6E6; background:#fff; padding:8px 10px; margin-top:8px; text-align:left; line-height:1.8; display:none;}
+.result-box.show{display:block;}
+.proto-note{position:fixed; right:12px; bottom:12px; z-index:2000; background:#FFF8EB; border:1px solid #E2C77A; padding:8px 10px; color:#8A5A10; max-width:280px; line-height:1.6;}
+</style>
+</head>
+<body>
+<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+  <thead>
+  <tr>
+    <td height="83" colspan="3" valign="top">
+      <div class="top"><img src="assets/logo.jpg" alt="logo"/></div>
+      <div class="top_bar">
+        <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5">&nbsp;</td>
+            <td>
+              <a href="javascript:;" class="fz fzMainMenu">房租管理</a>
+              <a href="javascript:;" class="zx">装修管理</a>
+              <a href="javascript:;" class="zx">摊销管理</a>
+              <a href="javascript:;" class="zx">权限管理</a>
+            </td>
+            <td align="right">欢迎您！<span class="bold">财务老师</span> <a href="javascript:;">安全退出</a>&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td valign="top" class="left_td">
+      <div class="left_bar">操作目录结构</div>
+      <div class="left_tree">
+        <h3 class="treetitle">房租合同管理</h3>
+        <ul class="treepage">
+          <li><a href="javascript:;">合同基础信息列表</a></li>
+          <li><a href="javascript:;">付款台账主界面</a></li>
+          <li><a href="javascript:;">差错更正/合同变更管理</a></li>
+        </ul>
+        <h3 class="treetitle">房租报表管理</h3>
+        <ul class="treepage">
+          <li><a href="javascript:;">NEWUS凭证主界面</a></li>
+        </ul>
+        <h3 class="treetitle">基础信息配置</h3>
+        <ul class="treepage">
+          <li><a href="javascript:;">城市配置</a></li>
+          <li><a href="javascript:;">业务主体配置</a></li>
+          <li class="active"><a href="javascript:;">法律主体配置</a></li>
+          <li><a href="javascript:;">汇率信息配置</a></li>
+          <li><a href="javascript:;">供应商管理</a></li>
+          <li><a href="javascript:;">折现率配置</a></li>
+        </ul>
+      </div>
+    </td>
+    <td valign="top" class="right_td">
+      <div class="position"><img src="assets/icon2.gif"/>您的当前位置： 法律主体配置管理</div>
+      <div class="right_main">
+        <div class="searchcase">
+          <form onsubmit="return false;">
+            <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="35" style="text-align:left; padding-left:25px;">
+                  所属城市：
+                  <select>
+                    <option value="">选择城市</option>
+                    <option>北京市</option>
+                    <option>成都市</option>
+                  </select>&nbsp;&nbsp;&nbsp;
+                  业务主体：
+                  <select>
+                    <option value="">选择业务主体</option>
+                    <option>学而思培优北京分校</option>
+                  </select>&nbsp;&nbsp;&nbsp;
+                  主体类型：
+                  <select id="filterMainBody">
+                    <option value="">选择主体类型</option>
+                    <option>集团</option>
+                    <option>励步</option>
+                    <option>外包权限1</option>
+                    <option>外包权限2</option>
+                    <option>外包权限8</option>
+                  </select>&nbsp;&nbsp;&nbsp;
+                  EAS编码：<input type="text" value="请输入EAS编码" style="width:10%;padding:0;color:gray;" onfocus="if(this.value=='请输入EAS编码'){this.value='';this.style.color='#000';}" onblur="if(this.value==''){this.value='请输入EAS编码';this.style.color='gray';}"/>&nbsp;
+                  法律主体编码：<input type="text" value="请输入法律主体编码" style="width:10%;padding:0;color:gray;" onfocus="if(this.value=='请输入法律主体编码'){this.value='';this.style.color='#000';}" onblur="if(this.value==''){this.value='请输入法律主体编码';this.style.color='gray';}"/>&nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:left; padding-left:25px;">
+                  法律主体：
+                  <input type="text" value="请输入法律主体" style="width:20%;padding:0;color:gray;" onfocus="if(this.value=='请输入法律主体'){this.value='';this.style.color='#000';}" onblur="if(this.value==''){this.value='请输入法律主体';this.style.color='gray';}"/>&nbsp;
+                  <input type="button" class="inputBtn" value="查询" onclick="alert('原型：按现网查询条件过滤列表（主体类型支持按任一标签命中）');" />
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+
+        <div class="listcase">
+          <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#B5D6E6" class="tableClass" style="border-collapse:collapse;" id="table">
+            <tr>
+              <th width="8%">城市</th>
+              <th width="8%">EAS编码</th>
+              <th width="10%">法律主体编码</th>
+              <th width="22%">法律主体</th>
+              <th width="16%">主体类型</th>
+              <th width="14%">业务主体</th>
+              <th width="10%">描述</th>
+              <th width="12%">操作</th>
+            </tr>
+            <tr>
+              <td>北京市</td>
+              <td>BJ02</td>
+              <td>L100001</td>
+              <td>北京百学思教育咨询有限公司</td>
+              <td class="tag-multi">集团,外包权限1</td>
+              <td>学而思培优北京分校</td>
+              <td>-</td>
+              <td class="actions"><a href="javascript:;" onclick="openEdit(0)">修改</a> <a href="javascript:;" onclick="confirm('您确定删除此法律主体吗?')">删除</a></td>
+            </tr>
+            <tr>
+              <td>北京市</td>
+              <td>BJ03</td>
+              <td>TAL31</td>
+              <td>北京环球智康时代教育咨询有限公司</td>
+              <td class="tag-multi">集团,外包权限1</td>
+              <td>学而思培优北京分校</td>
+              <td>-</td>
+              <td class="actions"><a href="javascript:;" onclick="openEdit(1)">修改</a> <a href="javascript:;" onclick="confirm('您确定删除此法律主体吗?')">删除</a></td>
+            </tr>
+            <tr>
+              <td>北京市</td>
+              <td>BJ11</td>
+              <td>L301673</td>
+              <td>北京童芃知远文化发展有限公司</td>
+              <td class="tag-multi">集团,外包权限5</td>
+              <td>学而思培优北京分校</td>
+              <td>-</td>
+              <td class="actions"><a href="javascript:;" onclick="openEdit(2)">修改</a> <a href="javascript:;" onclick="confirm('您确定删除此法律主体吗?')">删除</a></td>
+            </tr>
+            <tr>
+              <td>成都市</td>
+              <td>CD01</td>
+              <td>L200118</td>
+              <td>成都乐学培优教育咨询有限公司</td>
+              <td>集团</td>
+              <td>学而思培优成都分校</td>
+              <td>-</td>
+              <td class="actions"><a href="javascript:;" onclick="openEdit(3)">修改</a> <a href="javascript:;" onclick="confirm('您确定删除此法律主体吗?')">删除</a></td>
+            </tr>
+            <tr>
+              <td>北京市</td>
+              <td>BJ88</td>
+              <td>ZW12</td>
+              <td>上海三个音阶投资管理合伙企业（有限合伙）</td>
+              <td class="tag-multi">外包权限1,外包权限8</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="actions"><a href="javascript:;" onclick="openEdit(4)">修改</a> <a href="javascript:;" onclick="confirm('您确定删除此法律主体吗?')">删除</a></td>
+            </tr>
+            <tr>
+              <td colspan="8" align="center" style="padding:8px;">
+                <input type="button" class="inputBtn magn4" value="增加" onclick="openEdit(-1)" />
+                &nbsp;
+                <input type="button" class="inputBtn4 magn4" value="导入" onclick="openImport()" />
+                &nbsp;
+                <input type="button" class="inputBtn4 magn4" value="导出数据" onclick="exportData()" />
+              </td>
+            </tr>
+          </table>
+          <div class="pageTurn">
+            共有 1541 条记录，当前第 1/155 页&nbsp;&nbsp;
+            【 首页 】 【 上一页 】 <a href="javascript:;">1</a> <a href="javascript:;">2</a> <a href="javascript:;">3</a> ... 【 下一页 】 【 尾页 】
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<!-- 修改/增加弹层：一比一 openK + thickbox 风格 -->
+<div class="mask" id="mask" onclick="closeAll()"></div>
+<div class="tb-win tb-edit" id="winEdit">
+  <div class="openK" style="width:560px;">
+    <div class="openK_title">
+      <span><a href="javascript:;" onclick="closeAll()"><img src="assets/close.gif" width="18" height="18"/></a></span>
+      <span id="editTitle">修改法律主体</span>
+    </div>
+    <div class="hint-line">主体类型支持多选。同一主体可同时挂「集团」和「外包权限n」等多个标签。</div>
+    <form onsubmit="return saveEdit();">
+      <table width="100%" border="0" cellpadding="4" cellspacing="0" class="margintop20">
+        <tr>
+          <td width="100" height="36" align="right">城市：</td>
+          <td><select disabled><option>北京市</option></select></td>
+        </tr>
+        <tr>
+          <td height="36" align="right">业务主体：</td>
+          <td><select disabled><option>学而思培优北京分校</option></select></td>
+        </tr>
+        <tr>
+          <td align="right" valign="top" style="padding-top:8px;"><span class="red">*</span>主体类型：</td>
+          <td>
+            <table class="chk-grid" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td><label><input type="checkbox" name="mb" value="集团" checked/> 集团</label></td>
+                <td><label><input type="checkbox" name="mb" value="励步"/> 励步</label></td>
+                <td><label><input type="checkbox" name="mb" value="顺顺"/> 顺顺</label></td>
+                <td><label><input type="checkbox" name="mb" value="考满分"/> 考满分</label></td>
+              </tr>
+              <tr>
+                <td><label><input type="checkbox" name="mb" value="投资A"/> 投资A</label></td>
+                <td><label><input type="checkbox" name="mb" value="投资B"/> 投资B</label></td>
+                <td><label><input type="checkbox" name="mb" value="投资C"/> 投资C</label></td>
+                <td><label><input type="checkbox" name="mb" value="投资D"/> 投资D</label></td>
+              </tr>
+              <tr>
+                <td><label><input type="checkbox" name="mb" value="投资E"/> 投资E</label></td>
+                <td><label><input type="checkbox" name="mb" value="投资F"/> 投资F</label></td>
+                <td><label><input type="checkbox" name="mb" value="哒哒"/> 哒哒</label></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><label><input type="checkbox" name="mb" value="外包权限1" checked/> 外包权限1</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限2"/> 外包权限2</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限3"/> 外包权限3</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限4"/> 外包权限4</label></td>
+              </tr>
+              <tr>
+                <td><label><input type="checkbox" name="mb" value="外包权限5"/> 外包权限5</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限6"/> 外包权限6</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限7"/> 外包权限7</label></td>
+                <td><label><input type="checkbox" name="mb" value="外包权限8"/> 外包权限8</label></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td height="36" align="right">法律主体编码：</td>
+          <td><input type="text" id="fCode" value="L100001" disabled style="width:220px;"/></td>
+        </tr>
+        <tr>
+          <td height="36" align="right">EAS编码：</td>
+          <td><input type="text" value="BJ02" disabled style="width:220px;"/></td>
+        </tr>
+        <tr>
+          <td height="36" align="right">法律主体：</td>
+          <td><input type="text" id="fName" value="北京百学思教育咨询有限公司" disabled style="width:320px;"/></td>
+        </tr>
+        <tr>
+          <td height="36" align="right">主体性质：</td>
+          <td>
+            <select>
+              <option>不适用</option>
+              <option>尚未核定</option>
+              <option selected>一般纳税人</option>
+              <option>小规模纳税人</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td height="36" align="right">币种：</td>
+          <td><select><option>RMB</option><option>USD</option></select></td>
+        </tr>
+        <tr>
+          <td align="right">描述：</td>
+          <td><textarea rows="3" cols="36" style="font-size:12px;"></textarea></td>
+        </tr>
+        <tr>
+          <td height="46" align="right">&nbsp;</td>
+          <td>
+            <input type="submit" class="inputBtn" value="确认"/>&nbsp;&nbsp;
+            <input type="button" class="inputBtn" value="取消" onclick="closeAll()"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+<!-- 导入弹层 -->
+<div class="tb-win tb-import" id="winImport">
+  <div class="openK" style="width:620px;">
+    <div class="openK_title">
+      <span><a href="javascript:;" onclick="closeAll()"><img src="assets/close.gif" width="18" height="18"/></a></span>
+      导入主体类型
+    </div>
+    <table width="100%" border="0" cellpadding="6" cellspacing="0" class="margintop20" style="padding:0 16px;">
+      <tr>
+        <td width="90" align="right">选择文件：</td>
+        <td class="file-row" style="text-align:left;">
+          <input type="file" id="importFile" accept=".xlsx,.xls"/>
+          &nbsp;<a href="./主体类型导入模板.xlsx" style="color:#F60;text-decoration:underline;">下载模板</a>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">校验规则：</td>
+        <td style="text-align:left; color:#555; line-height:1.7;">
+          1. 仅支持 xlsx/xls，单次最多 2000 行<br/>
+          2. 主体编码必填且系统中存在<br/>
+          3. 主体类型必填，多个用英文逗号；非法类型整行失败<br/>
+          4. 本次调整内容仅允许「新增主体类型」「删除主体类型」<br/>
+          5. 新增只追加；删除只去类型，删空至零类型失败<br/>
+          6. 已存在/本无此类型 → 跳过，不记失败<br/>
+          7. 名称不一致不阻断，以编码为准并提示
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td style="text-align:left;">
+          <input type="button" class="inputBtn" value="确认" onclick="doImport()"/>&nbsp;&nbsp;
+          <input type="button" class="inputBtn" value="取消" onclick="closeAll()"/>
+          <div class="result-box" id="importResult"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="proto-note">
+  <b>原型说明</b><br/>
+  样式按现网法律主体配置页一比一切图还原。<br/>
+  可点：修改 / 增加 / 导入 / 导出数据。<br/>
+  主体类型：单选改为多选复选框。
+</div>
+
+<script type="text/javascript">
+var rows = [
+  {code:'L100001', name:'北京百学思教育咨询有限公司', types:['集团','外包权限1']},
+  {code:'TAL31', name:'北京环球智康时代教育咨询有限公司', types:['集团','外包权限1']},
+  {code:'L301673', name:'北京童芃知远文化发展有限公司', types:['集团','外包权限5']},
+  {code:'L200118', name:'成都乐学培优教育咨询有限公司', types:['集团']},
+  {code:'ZW12', name:'上海三个音阶投资管理合伙企业（有限合伙）', types:['外包权限1','外包权限8']}
+];
+
+function closeAll(){
+  document.getElementById('mask').className = 'mask';
+  document.getElementById('winEdit').className = 'tb-win tb-edit';
+  document.getElementById('winImport').className = 'tb-win tb-import';
+}
+function openEdit(idx){
+  document.getElementById('mask').className = 'mask show';
+  document.getElementById('winEdit').className = 'tb-win tb-edit show';
+  var boxes = document.getElementsByName('mb');
+  for(var i=0;i<boxes.length;i++){ boxes[i].checked = false; }
+  if(idx < 0){
+    document.getElementById('editTitle').innerHTML = '添加法律主体';
+    document.getElementById('fCode').value = '';
+    document.getElementById('fName').value = '';
+    return;
+  }
+  document.getElementById('editTitle').innerHTML = '修改法律主体';
+  var r = rows[idx];
+  document.getElementById('fCode').value = r.code;
+  document.getElementById('fName').value = r.name;
+  for(var j=0;j<boxes.length;j++){
+    if(r.types.indexOf(boxes[j].value) >= 0) boxes[j].checked = true;
+  }
+}
+function saveEdit(){
+  var boxes = document.getElementsByName('mb');
+  var picked = [];
+  for(var i=0;i<boxes.length;i++){ if(boxes[i].checked) picked.push(boxes[i].value); }
+  if(picked.length === 0){
+    alert('请至少选择一个主体类型');
+    return false;
+  }
+  alert('原型保存成功：\\n主体类型 = ' + picked.join(','));
+  closeAll();
+  return false;
+}
+function openImport(){
+  document.getElementById('mask').className = 'mask show';
+  document.getElementById('winImport').className = 'tb-win tb-import show';
+  var box = document.getElementById('importResult');
+  box.className = 'result-box';
+  box.innerHTML = '';
+}
+function exportData(){
+  var a = document.createElement('a');
+  a.href = './法律主体导出数据样例.xlsx';
+  a.download = '法律主体数据导出.xlsx';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+function doImport(){
+  var f = document.getElementById('importFile').value;
+  var box = document.getElementById('importResult');
+  box.className = 'result-box show';
+  if(!f){
+    box.innerHTML = '<span class="red">请先选择导入文件</span>';
+    return;
+  }
+  var lower = f.toLowerCase();
+  if(lower.indexOf('.xlsx') < 0 && lower.indexOf('.xls') < 0){
+    box.innerHTML = '<span class="red">文件格式不正确，仅支持 xlsx/xls</span>';
+    return;
+  }
+  box.innerHTML =
+    '导入完成（原型模拟）<br/>' +
+    '成功：2 行（新增主体类型 1 / 删除主体类型 1）<br/>' +
+    '跳过：1 项（已存在，跳过）<br/>' +
+    '失败：1 行<br/>' +
+    '<span class="red">失败明细：第5行 | ZW99 | 外包权限3 | 删除主体类型 | 主体编码不存在</span><br/>' +
+    '说明：换类型请先删后增；删除后不允许为零类型。';
+}
+</script>
+</body>
+</html>
